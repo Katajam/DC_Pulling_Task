@@ -45,7 +45,7 @@ type ReplyMaster struct {
 }
 
 func main() {
-	go CurrencyJob("ETH/BTC")
+    go CurrencyJob("ETH/BTC")
     go CurrencyJob("ETC/BTC")
     go CurrencyJob("XMR/BTC")
     go CurrencyJob("FCT/BTC")
@@ -99,7 +99,7 @@ func CurrencyJob(Currency string){
 		defer resp.Body.Close()
 
 		//Store
-		c := session.DB("local").C("Test_Transaction")
+		c := session.DB("local").C("Ten_Transaction")
 		for i := 0; i < len(rep.Data.History); i++ {
 			file := rep.Data.History[i]
 			rec_time,_ := time.Parse("2006-01-02 15:04:05",file.Time)
