@@ -51,9 +51,8 @@ func main() {
 	}
 	defer session.Close()
 	fmt.Println("Loading Server start to working......")
-	const timeform = "2099-01-02 24:59:59"
-	TimeLimit, _ := time.Parse(time.RFC3339, "2000-01-01 00:00:00")
-	fmt.Println(TimeLimit)
+		
+	TimeLimit, _ := time.Parse("2006-01-02 15:04:05","2006-01-02 23:59:59")
 	for {
 		apiURL := "https://www.coinigy.com/api/v1/data"
 		sendBody := ReBody{Exchange_code: "PLNX", Exchange_market: "ETH/BTC", Tran_type: "history"}
@@ -81,16 +80,14 @@ func main() {
 			panic(err)
 		}
 		defer resp.Body.Close()
-		//fmt.Println(rep.Data.History[0].Price)
 
 		//Store
 		c := session.DB("local").C("Test_Transaction")
 		for i := 0; i < len(rep.Data.History); i++ {
 			file := rep.Data.History[i]
-			rec_time, err := time.Parse(time.RFC3339, file.Time)
-			//fmt.Println(file.Time)
-			fmt.Println(err)
-			if rec_time.After(TimeLimit) {
+			rec_time,_ := time.Parse("2006-01-02 15:04:05",file.Time)
+			
+			if !rec_time.After(TimeLimit) {
 				fmt.Println("Time Conflict")
 				break
 			}
@@ -100,8 +97,8 @@ func main() {
 			}
 		}
 
-		TimeLimit, _ = time.Parse(timeform, rep.Data.History[0].Time)
+		TimeLimit, _ = time.Parse("2006-01-02 15:04:05", rep.Data.History[0].Time)
 		fmt.Println("Data loaded")
-		time.Sleep(1 * time.Minute)
+		time.Sleep(10 * time.Minute)
 	}
 }
