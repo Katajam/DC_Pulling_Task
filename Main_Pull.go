@@ -47,11 +47,11 @@ type ReplyMaster struct {
 func main() {
 	go CurrencyJob("ETH/BTC")
     for{
-        time.Sleep(12 * time.Month)
+        time.Sleep(60 * time.Minute)
     }
 }
 
-func CurrencyJob(Currency){
+func CurrencyJob(Currency string){
     session, err := mgo.Dial("mongodb://cmpt436:cmpt436master@127.0.0.1:27017/admin")
 	if err != nil {
 		panic(err)
