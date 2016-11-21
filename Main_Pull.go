@@ -46,6 +46,16 @@ type ReplyMaster struct {
 
 func main() {
 	go CurrencyJob("ETH/BTC")
+    go CurrencyJob("ETC/BTC")
+    go CurrencyJob("XMR/BTC")
+    go CurrencyJob("FCT/BTC")
+    go CurrencyJob("XRP/BTC")
+    go CurrencyJob("ZEC/BTC")
+    go CurrencyJob("REP/BTC")
+    go CurrencyJob("DASH/BTC")
+    go CurrencyJob("STEEM/BTC")
+    go CurrencyJob("GAME/BTC")
+    
     for{
         time.Sleep(60 * time.Minute)
     }
