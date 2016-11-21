@@ -45,7 +45,14 @@ type ReplyMaster struct {
 }
 
 func main() {
-	session, err := mgo.Dial("mongodb://cmpt436:cmpt436master@127.0.0.1:27017/admin")
+	go CurrencyJob("ETH/BTC")
+    for{
+        time.Sleep(12 * time.Month)
+    }
+}
+
+func CurrencyJob(Currency){
+    session, err := mgo.Dial("mongodb://cmpt436:cmpt436master@127.0.0.1:27017/admin")
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +62,7 @@ func main() {
 	TimeLimit, _ := time.Parse("2006-01-02 15:04:05","2006-01-02 23:59:59")
 	for {
 		apiURL := "https://www.coinigy.com/api/v1/data"
-		sendBody := ReBody{Exchange_code: "PLNX", Exchange_market: "ETH/BTC", Tran_type: "history"}
+		sendBody := ReBody{Exchange_code: "PLNX", Exchange_market: Currency, Tran_type: "history"}
 		b := new(bytes.Buffer)
 		json.NewEncoder(b).Encode(sendBody)
 
@@ -91,7 +98,7 @@ func main() {
 				fmt.Println("Time Conflict")
 				break
 			}
-			err = c.Insert(&NewTransaction{Coin: "ETH/BTC", Price: file.Price, Quantity: file.Quantity, Time: file.Time, Trade_type: file.Trade_type})
+			err = c.Insert(&NewTransaction{Coin: Currency, Price: file.Price, Quantity: file.Quantity, Time: file.Time, Trade_type: file.Trade_type})
 			if err != nil {
 				log.Fatal(err)
 			}
